@@ -1,5 +1,13 @@
+print("inicio")
+cartasCargadas = False
+dentroMenu = True
+
+
 def one():
-    print("Falta implementar")
+    print("Cartas Importadas Correctamente..")
+    global cartasCargadas
+    cartasCargadas = True
+    return
 
 def two():
     print("Falta implementar")
@@ -56,12 +64,17 @@ def menuSelect(menuInput):
     }
 
     func = switcher.get(menuInput, "default")
-
     func()
 
-print ("Seleciona la opción del menu..\n")
-menuInput = input()
+#MENU DE SELECCION
 
-menuSelect(int(menuInput))
-print("despues del menu")
-
+while dentroMenu:
+    print("----------MENU DEL JUEGO----------")
+    print(" 1.- Cargar cartas")
+    print(" 2.- Cargar cartas Enemigo")
+    if cartasCargadas:
+        print(" 3.- Otras Opciones")
+        print(" 4.- Muchas otras Opciones")
+    menuInput = input()
+    menuSelect(int(menuInput))
+    print("------")

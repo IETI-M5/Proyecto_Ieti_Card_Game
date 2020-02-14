@@ -1,16 +1,34 @@
+import xml.etree.ElementTree as ET
+
 print("inicio")
 cartasCargadas = False
 dentroMenu = True
 
 
 def one():
-    print("Cartas Importadas Correctamente..")
     global cartasCargadas
-    cartasCargadas = True
-    return
+    cartasCargadas = False
+    try:
+        baraja = ET.ElementTree(file="myBaraja.xml")
+        print("Baraja cargada correctamente!\n")
+        cartasCargadas = True
+    except FileNotFoundError:
+        print("Fichero no valido... Asegurese de que el fichero se llame (myBaraja.xml) y se encuentre en la carpeta del juego...\n")
+    return baraja
 
 def two():
-    print("Falta implementar")
+    try:
+        enemigo = ET.ElementTree(file="Enemigo.xml")
+        print("Baraja cargada correctamente!\n")
+        cartasCargadas = True
+    except FileNotFoundError:
+        print(
+            "Fichero no valido... Asegurese de que el fichero se llame (Enemigo.xml) y se encuentre en la carpeta del juego...\n")
+    return enemigo
+
+
+
+
 
 def three():
     print("Falta implementar")
@@ -21,31 +39,6 @@ def four():
 def five():
     print("Falta implementar")
 
-def six():
-    print("Falta implementar")
-
-def seven():
-    print("Falta implementar")
-
-def eight():
-    print("Falta implementar")
-
-def nine():
-    print("Falta implementar")
-
-def ten():
-    print("Falta implementar")
-
-def eleven():
-    print("Falta implementar")
-
-def twelve():
-    print("Falta implementar")
-
-def thirteen():
-    print("Falta implementar")
-
-
 def menuSelect(menuInput):
     switcher = {
         1: one,
@@ -53,14 +46,6 @@ def menuSelect(menuInput):
         3: three,
         4: four,
         5: five,
-        6: six,
-        7: seven,
-        8: eight,
-        9: nine,
-        10: ten,
-        11: eleven,
-        12: twelve,
-        13: thirteen
     }
 
     func = switcher.get(menuInput, "default")
@@ -75,6 +60,6 @@ while dentroMenu:
     if cartasCargadas:
         print(" 3.- Otras Opciones")
         print(" 4.- Muchas otras Opciones")
-    menuInput = input()
+    print("----------------------------------")
+    menuInput = input("Introduce una opción: ")
     menuSelect(int(menuInput))
-    print("------")

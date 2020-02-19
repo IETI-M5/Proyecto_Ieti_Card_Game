@@ -106,6 +106,16 @@ while dentroMenu:
     if cartasEnemigo & cartasCargadas:
         print(" 4.- Luchar Jugador VS Jugador")
     print("----------------------------------")
-    menuInput = input("Introduce una opción: ")
-    if menuInput.isnumeric():
-        menuSelect(int(menuInput))
+    
+    #Filtro del menu para no meter opciones invalidas.
+    print("Introduce una opción: ")
+    while True:
+        try:
+            menuInput = int(input())
+            if menuInput>0 and menuInput<14: #<-- Cambiar esta variable conforme las opciones del menu..
+                break
+            else:
+                print("Eso no es una opción del menú. Introduce una opción: ")
+        except ValueError:
+            print("Eso no es una opción del menú. Introduce una opción: ")
+    menuSelect(menuInput)

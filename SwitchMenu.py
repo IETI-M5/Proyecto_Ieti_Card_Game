@@ -46,29 +46,31 @@ def three():
 
     ## Menu para crear mazo, depende de los booleanos "cartasCargadas" y "cartasEnemigo" para activarse y funcionar, si estos no estan
     ## activados a la hora de introducir "3" en el menu saldra "Opcion no valida..."
-    
+
     ## En este menu te da la opcion de crear mazos Ofensivos, Defensivos, Equilibrados o Aleatorios, una vez escogida la opcion te pide
     ## si sera para el jugador o el enemigo.
 
-    global mazoRandomBoo
+    global usarEnemigo
     preguntaMazo = False
     global cartasCargadas
+    global cartasEnemigo
 
-    if cartasCargadas:
+    if cartasCargadas | cartasEnemigo:
        print("--------- CREAR MAZO ---------")
        print(" 1. Crear mazo Ofensivo")
        print(" 2. Crear mazo Defensivo")
        print(" 3. Crear mazo Equilibrado")
+       print(" 4. Crear mazo Aleatorio")
        print("----------------------------------")
        menuInput = input("Introduce una opción: ")
        print("----------------------------------")
        while not preguntaMazo:
-           randomMazo = input("Quieres que sea aleatorio? ")
+           randomMazo = input("Quieres usar el mazo Enemigo? ")
            if randomMazo.lower() == 'si':
-               mazoRandomBoo = True
+               usarEnemigo = True
                preguntaMazo = True
            elif randomMazo.lower() == 'no':
-               mazoRandomBoo = False
+               usarEnemigo = False
                preguntaMazo = True
            else:
                print("Opcion no valida...\n")
@@ -99,7 +101,7 @@ while dentroMenu:
     print("--------- MENU DEL JUEGO ---------")
     print(" 1.- Cargar cartas")
     print(" 2.- Cargar cartas Enemigo")
-    if cartasCargadas:
+    if cartasCargadas | cartasEnemigo:
         print(" 3.- Crear mazo")
     if cartasEnemigo & cartasCargadas:
         print(" 4.- Luchar Jugador VS Jugador")

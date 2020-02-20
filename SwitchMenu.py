@@ -1,16 +1,15 @@
 import xml.etree.ElementTree as ET
 
-print("inicio")
 cartasCargadas = False
 cartasEnemigo = False
 dentroMenu = True
 
+def cargarCartas():
 
-def one():
-    ## Carga el mazo "myBaraja.xml", el fichero debe estar en la raiz del programa y obligatoriamente tiene que llamarse asi, si
-    ## no es valido o no esta nos avisara y volvera al menu principal
+    # Carga el mazo "myBaraja.xml", el fichero debe estar en la raiz del programa y obligatoriamente tiene que llamarse asi, si
+    # no es valido o no esta nos avisara y volvera al menu principal
 
-    ## Una vez cargado el mazo activara el booleano "cartasCargadas" para habilitar las nuevas opciones del menu
+    # Una vez cargado el mazo activara el booleano "cartasCargadas" para habilitar las nuevas opciones del menu
 
     global cartasCargadas
     cartasCargadas = False
@@ -23,7 +22,7 @@ def one():
         print("Fichero no valido... Asegurese de que el fichero se llame (myBaraja.xml) y se encuentre en la carpeta del juego...\n")
     return
 
-def two():
+def cargarEnemigo():
 
     ## Carga el mazo "Enemigo.xml", el fichero debe estar en la raiz del programa y obligatoriamente tiene que llamarse asi, si
     ## no es valido o no esta nos avisara y volvera al menu principal
@@ -42,9 +41,9 @@ def two():
             "Fichero no valido... Asegurese de que el fichero se llame (Enemigo.xml) y se encuentre en la carpeta del juego...\n")
     return
 
-def three():
+def menuMazo():
 
-    ## Menu para crear mazo, depende de los booleanos "cartasCargadas" y "cartasEnemigo" para activarse y funcionar, si estos no estan
+    ## Menu para crear mazo, depende de los booleanos "cartasCargadas" o "cartasEnemigo" para activarse y funcionar, si uno no esta
     ## activados a la hora de introducir "3" en el menu saldra "Opcion no valida..."
 
     ## En este menu te da la opcion de crear mazos Ofensivos, Defensivos, Equilibrados o Aleatorios, una vez escogida la opcion te pide
@@ -56,7 +55,7 @@ def three():
     global cartasEnemigo
 
     if cartasCargadas | cartasEnemigo:
-       print("--------- CREAR MAZO ---------")
+       print("----------- CREAR MAZO -----------")
        print(" 1. Crear mazo Ofensivo")
        print(" 2. Crear mazo Defensivo")
        print(" 3. Crear mazo Equilibrado")
@@ -77,45 +76,75 @@ def three():
     else:
        print("Opcion no valida...\n")
 
-def four():
-    print("Falta implementar")
+def menuLucha():
 
-def five():
-    print("Falta implementar")
+    ## Menu para luchar, este tendra las opciones de luchar contra bots y luchar contra bots en modo liga,
+    ## para poder luchar contra otro jugador (Enemigo.xml) antes debe haberse cargado las cartas del Enemigo
 
+    ## Antes de acceder al menu, el boolean "cartasCargadas" ha de estar habilitado, de el depende ya que sin las
+    ## cartas del jugador no podria ni luchar contra el bot ni contra otro jugador, si esta deshabilitado saldra el
+    ## error "Opcion no valida...", porque habra introducido una opcion que aun no estaba habilitada ni se mostraba por
+    ## pantalla.
+
+    global cartasCargadas
+    global cartasEnemigo
+
+    if cartasCargadas:
+        print("------------- LUCHAR -------------")
+        print(" 1. Jugador VS Bot")
+        print(" 2. Jugador VS Bot (Liga)")
+        if cartasEnemigo:
+            print(" 3. Jugador VS Jugador")
+        print("----------------------------------")
+        menuInput = input("Introduce una opción: ")
+        print("----------------------------------")
+    else:
+        print("Opcion no valida...\n")
 def menuSelect(menuInput):
+
+    ## Funcion para el SWITCH del MENU PRINCIPAL, segun el valor introducido en "menuInput" accedera a la funcion asignada
+    ## en el SWITCH.
+
     switcher = {
-        1: one,
-        2: two,
-        3: three,
-        4: four,
-        5: five,
+        1: cargarCartas,
+        2: cargarEnemigo,
+        3: menuMazo,
+        4: menuLucha,
     }
+    return switcher.get(menuInput, "Opcion no valida...\n")
 
     func = switcher.get(menuInput, "default")
     func()
 
-#MENU DE SELECCION
-
 while dentroMenu:
+
+    ## MENU PRINCIPAL ##
+
+    ## Muestra por pantalla las opciones del menu principal del juego, al principio solo 2 opciones estaran habilitadas,
+    ## (Cargar cartas / Cargar cartas Enemigo), el usuario habra de acceder a una de las 2 para empezar y estas haran sus
+    ## operaciones correponientes. Cuando las cartas esten cargadas correctamente, tanto las del usuario o las del enemigo
+    ## habilitara el boolean "cargarCartas" o "cargarEnemigo".
+
+    ## Para habilitar la opcion 3, uno de los boolean ha de estar habilitado, asi el juego nos permite ya crear mazos con
+    ## solo haber cargado una baraja, esta accedera a un submenu.
+
+    ## Para habilitar la opcion 4, con solo tener el boolean "cargarCartas" habilitado nos dejara acceder al submenu de lucha
+    ## pero si el boolean "cargarEnemigo" no esta habilitado solo estaran habilitadas unas opciones
+    ## en concreto del submenu lucha <--- // POR IMPLEMENTAR
+
+    ## El menu comprobara si el valor introducido es un numero con "menuInput.isnumeric()", en caso de que no lo sea
+    ## imprimira por pantalla "Opcion no valida..."
+
     print("--------- MENU DEL JUEGO ---------")
     print(" 1.- Cargar cartas")
     print(" 2.- Cargar cartas Enemigo")
     if cartasCargadas | cartasEnemigo:
         print(" 3.- Crear mazo")
-    if cartasEnemigo & cartasCargadas:
+    if cartasCargadas:
         print(" 4.- Luchar Jugador VS Jugador")
     print("----------------------------------")
-    
-    #Filtro del menu para no meter opciones invalidas.
-    print("Introduce una opción: ")
-    while True:
-        try:
-            menuInput = int(input())
-            if menuInput>0 and menuInput<14: #<-- Cambiar esta variable conforme las opciones del menu..
-                break
-            else:
-                print("Eso no es una opción del menú. Introduce una opción: ")
-        except ValueError:
-            print("Eso no es una opción del menú. Introduce una opción: ")
-    menuSelect(menuInput)
+    menuInput = input("Introduce una opción: ")
+    if menuInput.isnumeric():
+        menuSelect(int(menuInput))
+    else:
+        print("Opcion no valida...\n")

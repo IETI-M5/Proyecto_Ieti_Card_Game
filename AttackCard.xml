@@ -1,0 +1,18 @@
+import xml.etree.ElementTree as ET
+
+## def ordenarXML(parent, attr):
+   ## parent[:] = sorted(parent, key=lambda child: child.get(attr))
+
+baraja = ET.ElementTree(file="myBaraja.xml")
+root = baraja.getroot()
+
+## ordenarXML(root, 'attack')
+
+value = 5
+cont = 0
+for child in root.findall('.//deck/'):
+    for cardChild in child.getchildren():
+        if cardChild.tag == "name":
+            print ("    ", cardChild.tag, ": ", cardChild.text)
+        if cardChild.tag == "attack":
+            print ("    ", cardChild.tag, ": ", cardChild.text)

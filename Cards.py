@@ -8,6 +8,9 @@ root = baraja.getroot()
 
 ## ordenarXML(root, 'attack')
 
+
+cartas = []
+
 class Carta:
     def __init__(self, name ,attack, defense):
         self.name = name
@@ -35,7 +38,7 @@ def cardSelect():
                 if cardChild.tag == "defense":
                     defense = int (cardChild.text)
             if attack == value:
-                p1 = Carta(name, attack, defense)
+                cartas.append(Carta(name, attack, defense))
                 cont = cont+1
 
 
@@ -43,4 +46,7 @@ def cardSelect():
 
 
 cardSelect()
-print(p1.name+" "+str(p1.attack)+" "+str(p1.defense))
+
+for i in range (10):
+    print(cartas[i].name+" "+str(cartas[i].attack)+" "+str(cartas[i].defense))
+

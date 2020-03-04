@@ -37,56 +37,81 @@ def menuSelect(menuInput):
 
 
 def menuCrearMazoA():
-
-    print("-------- CREAR MAZO ALIADO --------")
-    print(" 1. Crear mazo Ofensivo")
-    print(" 2. Crear mazo Defensivo")
-    print(" 3. Crear mazo Equilibrado")
-    print(" 4. Crear mazo Aleatorio")
-    print(" 5. Atras")
-    print("----------------------------------")
-    menuInput = int(input("Introduce una opción: "))
-    if (menuInput==5):
+    #Condicinal, si las cartas no estan cargadas no se puede entrar al menu.
+    if(Decks.cartasCargadasA):
+        print("-------- CREAR MAZO ALIADO --------")
+        print(" 1. Crear mazo Ofensivo")
+        print(" 2. Crear mazo Defensivo")
+        print(" 3. Crear mazo Equilibrado")
+        print(" 4. Crear mazo Aleatorio")
+        print(" 5. Atras")
+        print("----------------------------------")
+        menuInput = input("Introduce una opción: ")
+        #Filtros para que no funcionen opciones inexistentes.
+        if menuInput.isnumeric() and (int(menuInput)<6 and int(menuInput)>0):
+            if (int(menuInput)==5):
+                return
+            #Le sumo 10 para poder seguir usando el mismo switcher con diferentes menus, asi no me coincide con las opciones anteriores.
+            menuInput = int(menuInput)+10
+            menuSelect(menuInput)
+        else:
+            print("Opcion no valida...\n")
+            print("----------------------------------")
+            menuCrearMazoA()
+    else:
+        print("Opcion no valida...\n")
         return
-    #Le sumo 10 para poder seguir usando el mismo switcher con diferentes menus, asi no me coincide con las opciones anteriores.
-    menuInput = menuInput+10
-    menuSelect(menuInput)
-    print("----------------------------------")
 
 
 def menuCrearMazoB():
-
-    print("-------- CREAR MAZO ENEMIGO --------")
-    print(" 1. Crear mazo Ofensivo")
-    print(" 2. Crear mazo Defensivo")
-    print(" 3. Crear mazo Equilibrado")
-    print(" 4. Crear mazo Aleatorio")
-    print(" 5. Atras")
-    print("----------------------------------")
-    menuInput = int(input("Introduce una opción: "))
-    if (menuInput==5):
+    if(Decks.cartasCargadasB):
+        print("-------- CREAR MAZO ENEMIGO --------")
+        print(" 1. Crear mazo Ofensivo")
+        print(" 2. Crear mazo Defensivo")
+        print(" 3. Crear mazo Equilibrado")
+        print(" 4. Crear mazo Aleatorio")
+        print(" 5. Atras")
+        print("----------------------------------")
+        menuInput = input("Introduce una opción: ")
+        if menuInput.isnumeric() and (int(menuInput)<6 and int(menuInput)>0):
+            if (int(menuInput)==5):
+                return
+            #Le sumo 20 para poder seguir usando el mismo switcher con diferentes menus, asi no me coincide con las opciones anteriores.
+            menuInput = int(menuInput)+20
+            menuSelect(menuInput)
+        else:
+            print("Opcion no valida...\n")
+            print("----------------------------------")
+            menuCrearMazoB()
+    else:
+        print("Opcion no valida...\n")
         return
-    #Le sumo 20 para poder seguir usando el mismo switcher con diferentes menus, asi no me coincide con las opciones anteriores.
-    menuInput = menuInput+20
-    menuSelect(menuInput)
-    print("----------------------------------")
 
 
 def menuLucha():
-    print("------------- LUCHAR -------------")
-    print(" 1. Jugador VS Bot")
-    print(" 2. Jugador VS Bot (Liga)")
-    if Decks.cartasCargadasB:
-        print(" 3. Jugador VS Jugador")
-    print(" 4. Atras")
-    print("----------------------------------")
-    menuInput = int(input("Introduce una opción: "))
-    if (menuInput==4):
+    if(Decks.cartasCargadasA):
+        print("------------- LUCHAR -------------")
+        print(" 1. Jugador VS Bot")
+        print(" 2. Jugador VS Bot (Liga)")
+        if Decks.cartasCargadasB:
+            print(" 3. Jugador VS Jugador")
+        print(" 4. Atras")
+        print("----------------------------------")
+        menuInput = input("Introduce una opción: ")
+        if menuInput.isnumeric() and (int(menuInput)<5 and int(menuInput)>0):
+            if (int(menuInput)==4):
+                return
+            #Le sumo 30 para poder seguir usando el mismo switcher con diferentes menus, asi no me coincide con las opciones anteriores.
+            menuInput = int(menuInput)+30
+            menuSelect(menuInput)
+        else:
+            print("Opcion no valida...\n")
+            print("----------------------------------")
+            menuLucha()
+    else:
+        print("Opcion no valida...\n")
         return
-    #Le sumo 30 para poder seguir usando el mismo switcher con diferentes menus, asi no me coincide con las opciones anteriores.
-    menuInput = menuInput+30
-    menuSelect(menuInput)
-    print("----------------------------------")
+
 
 
 #---------------------------
@@ -105,7 +130,7 @@ while dentroMenu:
         print(" 5.- Luchar")
     print("----------------------------------")
     menuInput = input("Introduce una opción: ")
-    if menuInput.isnumeric():
+    if menuInput.isnumeric() and (int(menuInput)<6 and int(menuInput)>0):
         menuSelect(int(menuInput))
     else:
         print("Opcion no valida...\n")

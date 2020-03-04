@@ -62,6 +62,7 @@ def crearMazoAliadoOf():
     global barajaA
     root = barajaA.getroot()
     cont = 0
+    
 
     print("\n-----------------------------\nMazo ofensivo generado:\n-----------------------------")
     for value in range (5, 0, -1):

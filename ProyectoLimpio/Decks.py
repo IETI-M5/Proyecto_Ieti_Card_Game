@@ -1,10 +1,22 @@
 #<<<<<EN ESTE FICHERO ESTAN LAS FUNCIONES PARA CARGAR BARAJAS Y GENERAR MAZOS>>>>>
 
 import xml.etree.ElementTree as ET
+import random
 
 
 cartasCargadasA = False
 cartasCargadasB = False
+
+mazoA = []
+mazoB = []
+
+class Carta:
+    def __init__(self, summonPoints, typeClass, name, attack, defense):
+        self.summonPoints = summonPoints
+        self.typeClass = typeClass
+        self.name = name
+        self.attack = attack
+        self.defense = defense
 
 
 #--------------------------------------
@@ -47,235 +59,102 @@ def cargarCartasB():
 
 def crearMazoAliadoOf():
 
-    import xml.etree.ElementTree as ET
-
     global barajaA
     root = barajaA.getroot()
+    cont = 0
 
-    mazoA = []
+    print("\n-----------------------------\nMazo ofensivo generado:\n-----------------------------")
+    for value in range (5, 0, -1):
+        for card in root.findall('deck/card[attack="'+str(value)+'"]'):
+            summonPoints = int(card.attrib['summonPoints'])
+            typeClass = card.attrib['type']
+            name = card.find("name").text
+            attack = card.find("attack").text
+            defense = card.find("defense").text
 
-    class Carta:
-        def __init__(self, name, attack, defense, description):
-            self.name = name
-            self.attack = attack
-            self.defense = defense
-            self.description = description
-
-    def cardSelect():
-        cont = 0
-        value = 5
-        global p1
-
-        while True:
-            if value < 0:
+            print (name, attack+"/"+defense)
+            mazoA.append(Carta(summonPoints, typeClass, name, attack, defense))
+            cont = cont+1
+            if cont == 10:
                 return
-            for child in root.findall('.//deck/'):
-                for cardChild in child.getchildren():
-                    if cont == 10:
-                        return
-                    if cardChild.tag == "name":
-                        name = cardChild.text
-                    if cardChild.tag == "attack":
-                        attack = int(cardChild.text)
-                    if cardChild.tag == "defense":
-                        defense = int(cardChild.text)
-                    if cardChild.tag == "description":
-                        description = cardChild.text
-                if attack == value:
-                    mazoA.append(Carta(name, attack, defense, description))
-                    cont = cont + 1
-
-            value = value - 1
-
-    cardSelect()
-
-    for i in range(10):
-        print(mazoA[i].name + " " + str(mazoA[i].attack) + " " + str(mazoA[i].defense))
-        print(str(mazoA[i].description))
-        print()
-
-
+        
 
 def crearMazoAliadoDef():
-    import xml.etree.ElementTree as ET
-
     global barajaA
     root = barajaA.getroot()
+    cont = 0
 
-    mazoA = []
+    print("\n-----------------------------\nMazo defensivo generado:\n-----------------------------")
+    for value in range (5, 0, -1):
+        for card in root.findall('deck/card[defense="'+str(value)+'"]'):
+            summonPoints = int(card.attrib['summonPoints'])
+            typeClass = card.attrib['type']
+            name = card.find("name").text
+            attack = card.find("attack").text
+            defense = card.find("defense").text
 
-    class Carta:
-        def __init__(self, name, attack, defense, description):
-            self.name = name
-            self.attack = attack
-            self.defense = defense
-            self.description = description
-
-    def cardSelect():
-        cont = 0
-        value = 5
-        global p1
-
-        while True:
-            if value < 0:
+            print (name, attack+"/"+defense)
+            mazoA.append(Carta(summonPoints, typeClass, name, attack, defense))
+            cont = cont+1
+            if cont == 10:
                 return
-            for child in root.findall('.//deck/'):
-                for cardChild in child.getchildren():
-                    if cont == 10:
-                        return
-                    if cardChild.tag == "name":
-                        name = cardChild.text
-                    if cardChild.tag == "attack":
-                        attack = int(cardChild.text)
-                    if cardChild.tag == "defense":
-                        defense = int(cardChild.text)
-                    if cardChild.tag == "description":
-                        description = cardChild.text
-                if defense == value:
-                    mazoA.append(Carta(name, attack, defense, description))
-                    cont = cont + 1
-
-            value = value - 1
-
-    cardSelect()
-
-    for i in range(10):
-        print(mazoA[i].name + " " + str(mazoA[i].attack) + " " + str(mazoA[i].defense))
-        print(str(mazoA[i].description))
-        print()
 
 def crearMazoAliadoEq():
 
-    import xml.etree.ElementTree as ET
-
     global barajaA
     root = barajaA.getroot()
+    cont = 0
 
-    ## ordenarXML(root, 'attack')
+    print("\n-----------------------------\nMazo equilibrado generado:\n-----------------------------")
+    for value in range (0, 5, 1):
+        for card in root.findall('deck/card'):
+            #Si el valor absoluto de la diferencia entre ataque y defensa es igual al valor que utilizamos en el for guardamos la carta, empezando desde 0 hasta llegar a 5.
+            if abs( int(card.find("attack").text) - int(card.find("defense").text)) == value:
+                summonPoints = int(card.attrib['summonPoints'])
+                typeClass = card.attrib['type']
+                name = card.find("name").text
+                attack = card.find("attack").text
+                defense = card.find("defense").text
 
-    mazoA = []
-
-    class Carta:
-        def __init__(self, name, attack, defense, description):
-            self.name = name
-            self.attack = attack
-            self.defense = defense
-            self.description = description
-
-    def cardSelect():
-        cont = 0
-        value = 0
-        global p1
-
-        while True:
-            if value > 5:
-                return
-            for child in root.findall('.//deck/'):
-                for cardChild in child.getchildren():
-                    if cont == 10:
-                        return
-                    if cardChild.tag == "name":
-                        name = cardChild.text
-                    if cardChild.tag == "attack":
-                        attack = int(cardChild.text)
-                    if cardChild.tag == "defense":
-                        defense = int(cardChild.text)
-                    if cardChild.tag == "description":
-                        description = cardChild.text
-                if abs(attack) - abs(defense) == value:
-                    mazoA.append(Carta(name, attack, defense, description))
-                    cont = cont + 1
-
-            value = value + 1
-
-    cardSelect()
-
-    for i in range(10):
-        print(mazoA[i].name + " " + str(mazoA[i].attack) + " " + str(mazoA[i].defense))
-        print(str(mazoA[i].description))
-        print()
-
+                print (name, attack+"/"+defense)
+                mazoA.append(Carta(summonPoints, typeClass, name, attack, defense))
+                cont = cont+1
+                if cont == 10:
+                    return
 
 
 def crearMazoAliadoRan():
-    import xml.etree.ElementTree as ET
-    import random
 
     global barajaA
     root = barajaA.getroot()
 
-    ## Modulo para conseguir array de numeros aleatorios
+    cont = 0
 
-    def numU(x, L):
-        esUnico = True
-        for i in range(len(L)):
-            if x == L[i]:
-                esUnico = False
-                break
-        return esUnico
-
-    L = []
+    #variable i como iterador que va contando por cada carta que pasa, y variable j para la posicion de la array aleatoria
+    #Si coincide la variable i, con en contenido de la array en la posicion j, guardara la carta.
+    i = 1
     j = 0
 
-    while j < 10:
-        x = random.randint(1, 20)
-        if numU(x, L):
-            L.append(x)
-            j += 1
+    #genera una array de 10 posiciones con numeros aleatorios entre el 1 y el 20 y la ordena.
+    randChoices = (random.sample(range(1, 21),10))
+    randChoices.sort()
 
-    L.sort()
+    print("\n-----------------------------\nMazo aleatorio generado:\n-----------------------------")
+    for card in root.findall('deck/card'):
+        if i == randChoices[j]:
+            summonPoints = int(card.attrib['summonPoints'])
+            typeClass = card.attrib['type']
+            name = card.find("name").text
+            attack = card.find("attack").text
+            defense = card.find("defense").text
 
-    mazoA = []
-
-    class Carta:
-        def __init__(self, name, attack, defense, description):
-            self.name = name
-            self.attack = attack
-            self.defense = defense
-            self.description = description
-
-    def cardSelect():
-        cont = 0
-        value = L[0]
-        global p1
-        posRandom = 1
-
-        arrayNum = [10]
-
-        while True:
-            if posRandom > 20:
+            print (name, attack+"/"+defense)
+            mazoA.append(Carta(summonPoints, typeClass, name, attack, defense))
+            cont = cont+1
+            j = j+1
+            if cont == 10 or j==10:
                 return
-            for child in root.findall('.//deck/'):
-                for cardChild in child.getchildren():
-                    if cont == 10:
-                        return
-                    if cardChild.tag == "name":
-                        name = cardChild.text
-                    if cardChild.tag == "attack":
-                        attack = int(cardChild.text)
-                    if cardChild.tag == "defense":
-                        defense = int(cardChild.text)
-                    if cardChild.tag == "description":
-                        description = cardChild.text
-                ## print(cont)
-                if posRandom == value:
-                    mazoA.append(Carta(name, attack, defense, description))
-                    cont = cont + 1
-                    if cont != 10:
-                        value = L[cont]
-                    else:
-                        return
-                    posRandom = 1
-                    break
-                posRandom = posRandom + 1
-            ##  print(posRandom)
-
-    cardSelect()
-
-    for i in range(10):
-        print(mazoA[i].name + " " + str(mazoA[i].attack) + " " + str(mazoA[i].defense))
-        print(str(mazoA[i].description))
-        print()
+        i=i+1
 
 
 
@@ -285,228 +164,101 @@ def crearMazoAliadoRan():
 
 def crearMazoEnemigoOf():
 
-    import xml.etree.ElementTree as ET
-
     global barajaB
     root = barajaB.getroot()
+    cont = 0
 
-    mazoB = []
+    print("\n-----------------------------\nMazo ofensivo generado:\n-----------------------------")
+    for value in range (5, 0, -1):
+        for card in root.findall('deck/card[attack="'+str(value)+'"]'):
+            summonPoints = int(card.attrib['summonPoints'])
+            typeClass = card.attrib['type']
+            name = card.find("name").text
+            attack = card.find("attack").text
+            defense = card.find("defense").text
 
-    class Carta:
-        def __init__(self, name, attack, defense, description):
-            self.name = name
-            self.attack = attack
-            self.defense = defense
-            self.description = description
-
-    def cardSelect():
-        cont = 0
-        value = 5
-        global p1
-
-        while True:
-            if value < 0:
+            print (name, attack+"/"+defense)
+            mazoB.append(Carta(summonPoints, typeClass, name, attack, defense))
+            cont = cont+1
+            if cont == 10:
                 return
-            for child in root.findall('.//deck/'):
-                for cardChild in child.getchildren():
-                    if cont == 10:
-                        return
-                    if cardChild.tag == "name":
-                        name = cardChild.text
-                    if cardChild.tag == "attack":
-                        attack = int(cardChild.text)
-                    if cardChild.tag == "defense":
-                        defense = int(cardChild.text)
-                    if cardChild.tag == "description":
-                        description = cardChild.text
-                if attack == value:
-                    mazoB.append(Carta(name, attack, defense, description))
-                    cont = cont + 1
-
-            value = value - 1
-
-    cardSelect()
-
-    for i in range(10):
-        print(mazoB[i].name + " " + str(mazoB[i].attack) + " " + str(mazoB[i].defense))
-        print(str(mazoB[i].description))
-        print()
 
 def crearMazoEnemigoDef():
-    import xml.etree.ElementTree as ET
 
     global barajaB
     root = barajaB.getroot()
+    cont = 0
 
-    mazoB = []
+    print("\n-----------------------------\nMazo defensivo generado:\n-----------------------------")
+    for value in range (5, 0, -1):
+        for card in root.findall('deck/card[defense="'+str(value)+'"]'):
+            summonPoints = int(card.attrib['summonPoints'])
+            typeClass = card.attrib['type']
+            name = card.find("name").text
+            attack = card.find("attack").text
+            defense = card.find("defense").text
 
-    class Carta:
-        def __init__(self, name, attack, defense, description):
-            self.name = name
-            self.attack = attack
-            self.defense = defense
-            self.description = description
-
-    def cardSelect():
-        cont = 0
-        value = 5
-        global p1
-
-        while True:
-            if value < 0:
+            print (name, attack+"/"+defense)
+            mazoB.append(Carta(summonPoints, typeClass, name, attack, defense))
+            cont = cont+1
+            if cont == 10:
                 return
-            for child in root.findall('.//deck/'):
-                for cardChild in child.getchildren():
-                    if cont == 10:
-                        return
-                    if cardChild.tag == "name":
-                        name = cardChild.text
-                    if cardChild.tag == "attack":
-                        attack = int(cardChild.text)
-                    if cardChild.tag == "defense":
-                        defense = int(cardChild.text)
-                    if cardChild.tag == "description":
-                        description = cardChild.text
-                if defense == value:
-                    mazoB.append(Carta(name, attack, defense, description))
-                    cont = cont + 1
 
-            value = value - 1
-
-    cardSelect()
-
-    for i in range(10):
-        print(mazoB[i].name + " " + str(mazoB[i].attack) + " " + str(mazoB[i].defense))
-        print(str(mazoB[i].description))
-        print()
 
 def crearMazoEnemigoEq():
-    import xml.etree.ElementTree as ET
 
     global barajaB
     root = barajaB.getroot()
 
-    ## ordenarXML(root, 'attack')
+    cont = 0
 
-    mazoB = []
+    print("\n-----------------------------\nMazo equilibrado generado:\n-----------------------------")
+    for value in range (0, 5, 1):
+        for card in root.findall('deck/card'):
+            #Si el valor absoluto de la diferencia entre ataque y defensa es igual al valor que utilizamos en el for guardamos la carta, empezando desde 0 hasta llegar a 5.
+            if abs( int(card.find("attack").text) - int(card.find("defense").text)) == value:
+                summonPoints = int(card.attrib['summonPoints'])
+                typeClass = card.attrib['type']
+                name = card.find("name").text
+                attack = card.find("attack").text
+                defense = card.find("defense").text
 
-    class Carta:
-        def __init__(self, name, attack, defense, description):
-            self.name = name
-            self.attack = attack
-            self.defense = defense
-            self.description = description
-
-    def cardSelect():
-        cont = 0
-        value = 0
-        global p1
-
-        while True:
-            if value > 5:
-                return
-            for child in root.findall('.//deck/'):
-                for cardChild in child.getchildren():
-                    if cont == 10:
-                        return
-                    if cardChild.tag == "name":
-                        name = cardChild.text
-                    if cardChild.tag == "attack":
-                        attack = int(cardChild.text)
-                    if cardChild.tag == "defense":
-                        defense = int(cardChild.text)
-                    if cardChild.tag == "description":
-                        description = cardChild.text
-                if abs(attack) - abs(defense) == value:
-                    mazoB.append(Carta(name, attack, defense, description))
-                    cont = cont + 1
-
-            value = value + 1
-
-    cardSelect()
-
-    for i in range(10):
-        print(mazoB[i].name + " " + str(mazoB[i].attack) + " " + str(mazoB[i].defense))
-        print(str(mazoB[i].description))
-        print()
+                print (name, attack+"/"+defense)
+                mazoB.append(Carta(summonPoints, typeClass, name, attack, defense))
+                cont = cont+1
+                if cont == 10:
+                    return
 
 
 def crearMazoEnemigoRan():
-    import xml.etree.ElementTree as ET
-    import random
 
     global barajaB
     root = barajaB.getroot()
 
-    ## Modulo para conseguir array de numeros aleatorios
+    cont = 0
 
-    def numU(x, L):
-        esUnico = True
-        for i in range(len(L)):
-            if x == L[i]:
-                esUnico = False
-                break
-        return esUnico
-
-    L = []
+    #variable i como iterador que va contando por cada carta que pasa, y variable j para la posicion de la array aleatoria
+    #Si coincide la variable i, con en contenido de la array en la posicion j, guardara la carta.
+    i = 1
     j = 0
 
-    while j < 10:
-        x = random.randint(1, 20)
-        if numU(x, L):
-            L.append(x)
-            j += 1
+    #genera una array de 10 posiciones con numeros aleatorios entre el 1 y el 20 y la ordena.
+    randChoices = (random.sample(range(1, 21),10))
+    randChoices.sort()
 
-    L.sort()
+    print("\n-----------------------------\nMazo aleatorio generado:\n-----------------------------")
+    for card in root.findall('deck/card'):
+        if i == randChoices[j]:
+            summonPoints = int(card.attrib['summonPoints'])
+            typeClass = card.attrib['type']
+            name = card.find("name").text
+            attack = card.find("attack").text
+            defense = card.find("defense").text
 
-    mazoB = []
-
-    class Carta:
-        def __init__(self, name, attack, defense, description):
-            self.name = name
-            self.attack = attack
-            self.defense = defense
-            self.description = description
-
-    def cardSelect():
-        cont = 0
-        value = L[0]
-        global p1
-        posRandom = 1
-
-        arrayNum = [10]
-
-        while True:
-            if posRandom > 20:
+            print (name, attack+"/"+defense)
+            mazoB.append(Carta(summonPoints, typeClass, name, attack, defense))
+            cont = cont+1
+            j = j+1
+            if cont == 10 or j==10:
                 return
-            for child in root.findall('.//deck/'):
-                for cardChild in child.getchildren():
-                    if cont == 10:
-                        return
-                    if cardChild.tag == "name":
-                        name = cardChild.text
-                    if cardChild.tag == "attack":
-                        attack = int(cardChild.text)
-                    if cardChild.tag == "defense":
-                        defense = int(cardChild.text)
-                    if cardChild.tag == "description":
-                        description = cardChild.text
-                ## print(cont)
-                if posRandom == value:
-                    mazoB.append(Carta(name, attack, defense, description))
-                    cont = cont + 1
-                    if cont != 10:
-                        value = L[cont]
-                    else:
-                        return
-                    posRandom = 1
-                    break
-                posRandom = posRandom + 1
-            ##  print(posRandom)
-
-    cardSelect()
-
-    for i in range(10):
-        print(mazoB[i].name + " " + str(mazoB[i].attack) + " " + str(mazoB[i].defense))
-        print(str(mazoB[i].description))
-        print()
+        i=i+1

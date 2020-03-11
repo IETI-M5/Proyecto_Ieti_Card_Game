@@ -124,7 +124,13 @@ def crearMazoAliadoEq():
                     return
 
 
-def crearMazoAliadoRan():
+def crearMazoAliadoRan(*cambio):
+
+    
+    if len(cambio)==0:
+        mazo=mazoA
+    else:
+        mazo=mazoB
 
     global barajaA
     root = barajaA.getroot()
@@ -150,7 +156,7 @@ def crearMazoAliadoRan():
             defense = card.find("defense").text
 
             print (name, attack+"/"+defense)
-            mazoA.append(Carta(summonPoints, typeClass, name, attack, defense))
+            mazo.append(Carta(summonPoints, typeClass, name, attack, defense))
             cont = cont+1
             j = j+1
             if cont == 10 or j==10:
